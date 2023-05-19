@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:todo_idez/app/domain/entities/item_list.dart';
 import 'package:todo_idez/app/domain/enums/filter_by_tasks.dart';
+import 'package:todo_idez/home/presentation/components/custom_floating_button_add_component.dart';
 import 'package:todo_idez/home/presentation/components/custom_list_item_component.dart';
 
 import '../application/home_store.dart';
@@ -17,6 +18,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final controller = Modular.get<HomeStore>();
+  final _titleTextEditingController = TextEditingController();
 
   List<ItemList> todoListMock = [
     ItemList(title: 'teste 1', checked: false),
@@ -56,7 +58,7 @@ class _HomePageState extends State<HomePage> {
                     const Center(
                       child: Text('Adicione uma nova tarefa!'),
                     ),
-                  ...controller.todoList.map(
+                  ...controller.filteredList.map(
                     (element) => CustomListItemComponent(
                       title: element.title,
                       checked: controller.checkedList,
@@ -70,12 +72,17 @@ class _HomePageState extends State<HomePage> {
           );
         },
       ),
-      //TODO AQUI COLOCAR O BOTÃO DE ADICIONAR COM A dialog
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: CustomFloatingButtonAddComponent(
         onPressed: () {
           controller.addToList(todoListMock);
         },
-        child: const Icon(Icons.add),
+        icon: Icons.add,
+        label: 'Nova tarefa:',
+        onDismiss: () {
+          _titleTextEditingController.clear();
+          Navigator.of(context).pop();
+        },
+        titleTextEditingController: _titleTextEditingController,
       ),
     );
   }
