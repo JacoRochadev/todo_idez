@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:todo_idez/app/domain/entities/item_list.dart';
 import 'package:todo_idez/app/domain/enums/filter_by_tasks.dart';
 import 'package:todo_idez/home/presentation/components/custom_floating_button_add_component.dart';
 import 'package:todo_idez/home/presentation/components/custom_list_item_component.dart';
@@ -20,10 +19,6 @@ class _HomePageState extends State<HomePage> {
   final controller = Modular.get<HomeStore>();
   final _titleTextEditingController = TextEditingController();
 
-  List<ItemList> todoListMock = [
-    ItemList(title: 'teste 1', checked: false),
-    ItemList(title: 'teste 2', checked: false),
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,7 +69,9 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: CustomFloatingButtonAddComponent(
         onPressed: () {
-          controller.addToList(todoListMock);
+          controller.addToList(controller.todoList);
+          _titleTextEditingController.clear();
+          Navigator.of(context).pop();
         },
         icon: Icons.add,
         label: 'Nova tarefa:',
