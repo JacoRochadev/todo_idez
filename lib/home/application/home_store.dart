@@ -12,10 +12,16 @@ abstract class _HomeStoreBase with Store {
   ObservableList<ItemList> todoList = ObservableList<ItemList>();
 
   @observable
+  bool checkedList = false;
+
+  @observable
   FilterByTasks filter = FilterByTasks.all;
 
   @action
   void addToList(List<ItemList> value) => todoList.addAll(value.asObservable());
+
+  @action
+  void changeCheckedList(bool? value) => checkedList = value ?? checkedList;
 
   @action
   void changeFilter(FilterByTasks value) => filter = value;

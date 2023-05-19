@@ -57,8 +57,8 @@ class _HomePageState extends State<HomePage> {
                   ...controller.todoList.map(
                     (element) => CustomListItemComponent(
                       title: element.title,
-                      checked: false,
-                      onTap: (value) {},
+                      checked: controller.checkedList,
+                      onTap: controller.changeCheckedList,
                     ),
                   ),
                 ],

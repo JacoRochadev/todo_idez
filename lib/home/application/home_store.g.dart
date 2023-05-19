@@ -33,6 +33,22 @@ mixin _$HomeStore on _HomeStoreBase, Store {
     });
   }
 
+  late final _$checkedListAtom =
+      Atom(name: '_HomeStoreBase.checkedList', context: context);
+
+  @override
+  bool get checkedList {
+    _$checkedListAtom.reportRead();
+    return super.checkedList;
+  }
+
+  @override
+  set checkedList(bool value) {
+    _$checkedListAtom.reportWrite(value, super.checkedList, () {
+      super.checkedList = value;
+    });
+  }
+
   late final _$filterAtom =
       Atom(name: '_HomeStoreBase.filter', context: context);
 
@@ -64,6 +80,17 @@ mixin _$HomeStore on _HomeStoreBase, Store {
   }
 
   @override
+  void changeCheckedList(bool? value) {
+    final _$actionInfo = _$_HomeStoreBaseActionController.startAction(
+        name: '_HomeStoreBase.changeCheckedList');
+    try {
+      return super.changeCheckedList(value);
+    } finally {
+      _$_HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void changeFilter(FilterByTasks value) {
     final _$actionInfo = _$_HomeStoreBaseActionController.startAction(
         name: '_HomeStoreBase.changeFilter');
@@ -78,6 +105,7 @@ mixin _$HomeStore on _HomeStoreBase, Store {
   String toString() {
     return '''
 todoList: ${todoList},
+checkedList: ${checkedList},
 filter: ${filter},
 filteredList: ${filteredList}
     ''';
