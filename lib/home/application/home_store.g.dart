@@ -80,6 +80,17 @@ mixin _$HomeStore on _HomeStoreBase, Store {
   }
 
   @override
+  void removeToList(ItemList value) {
+    final _$actionInfo = _$_HomeStoreBaseActionController.startAction(
+        name: '_HomeStoreBase.removeToList');
+    try {
+      return super.removeToList(value);
+    } finally {
+      _$_HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void changeCheckedList(bool? value) {
     final _$actionInfo = _$_HomeStoreBaseActionController.startAction(
         name: '_HomeStoreBase.changeCheckedList');

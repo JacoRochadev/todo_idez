@@ -21,6 +21,9 @@ abstract class _HomeStoreBase with Store {
   void addToList(List<ItemList> value) => todoList.addAll(value.asObservable());
 
   @action
+  void removeToList(ItemList value) => todoList.remove(value);
+
+  @action
   void changeCheckedList(bool? value) => checkedList = value ?? checkedList;
 
   @action

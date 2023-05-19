@@ -53,12 +53,15 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   if (controller.todoList.isEmpty)
-                    const Text('Nenhum item adicionado'),
+                    const Center(
+                      child: Text('Adicione uma nova tarefa!'),
+                    ),
                   ...controller.todoList.map(
                     (element) => CustomListItemComponent(
                       title: element.title,
                       checked: controller.checkedList,
                       onTap: controller.changeCheckedList,
+                      deleteItem: () => controller.removeToList(element),
                     ),
                   ),
                 ],
@@ -67,7 +70,7 @@ class _HomePageState extends State<HomePage> {
           );
         },
       ),
-      //TODO AQUI COLOCAR O BOTÃO DE ADICIONAR COM A FUNÇAÕ
+      //TODO AQUI COLOCAR O BOTÃO DE ADICIONAR COM A dialog
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           controller.addToList(todoListMock);
