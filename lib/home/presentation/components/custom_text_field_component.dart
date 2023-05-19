@@ -4,16 +4,19 @@ class CustomTextFieldComponent extends StatelessWidget {
   final String hint;
   final TextEditingController? textEditingController;
   final TextInputType keyboardType;
+  final ValueChanged<String>? onChanged;
   const CustomTextFieldComponent({
     super.key,
     required this.hint,
     this.textEditingController,
     required this.keyboardType,
+    this.onChanged,
   });
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      onChanged: onChanged,
       keyboardType: keyboardType,
       controller: textEditingController,
       decoration: InputDecoration(

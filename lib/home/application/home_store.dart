@@ -1,5 +1,5 @@
 import 'package:mobx/mobx.dart';
-import 'package:todo_idez/app/domain/entities/item_list.dart';
+import 'package:todo_idez/app/domain/entities/task.dart';
 import 'package:todo_idez/app/domain/enums/filter_by_tasks.dart';
 
 part 'home_store.g.dart';
@@ -9,7 +9,7 @@ class HomeStore = _HomeStoreBase with _$HomeStore;
 
 abstract class _HomeStoreBase with Store {
   @observable
-  ObservableList<ItemList> todoList = ObservableList<ItemList>();
+  ObservableList<Task> todoList = ObservableList<Task>();
 
   @observable
   bool checkedList = false;
@@ -18,10 +18,10 @@ abstract class _HomeStoreBase with Store {
   FilterByTasks filter = FilterByTasks.all;
 
   @action
-  void addToList(List<ItemList> value) => todoList.addAll(value.asObservable());
+  void addToList(List<Task> value) => todoList.addAll(value.asObservable());
 
   @action
-  void removeToList(ItemList value) => todoList.remove(value);
+  void removeToList(Task value) => todoList.remove(value);
 
   @action
   void changeCheckedList(bool? value) => checkedList = value ?? checkedList;
@@ -30,7 +30,7 @@ abstract class _HomeStoreBase with Store {
   void changeFilter(FilterByTasks value) => filter = value;
 
   @computed
-  List<ItemList> get filteredList {
+  List<Task> get filteredList {
     switch (filter) {
       case FilterByTasks.all:
         return todoList;

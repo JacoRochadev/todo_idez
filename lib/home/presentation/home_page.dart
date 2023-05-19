@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:todo_idez/app/domain/enums/filter_by_tasks.dart';
-import 'package:todo_idez/home/presentation/components/custom_floating_button_add_component.dart';
 import 'package:todo_idez/home/presentation/components/custom_list_item_component.dart';
 
 import '../application/home_store.dart';
 import 'components/custom_button_filter_component.dart';
+import 'components/home_page_add_task_dialog.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -67,19 +67,19 @@ class _HomePageState extends State<HomePage> {
           );
         },
       ),
-      floatingActionButton: CustomFloatingButtonAddComponent(
+      floatingActionButton: FloatingActionButton(
         onPressed: () {
-          controller.addToList(controller.todoList);
-          _titleTextEditingController.clear();
-          Navigator.of(context).pop();
+          HomePageTaskDialog.show(
+            context: context,
+            onAddTask: (value) {
+              controller.addToList([value]);
+              Navigator.pop(context);
+            },
+          );
         },
-        icon: Icons.add,
-        label: 'Nova tarefa:',
-        onDismiss: () {
-          _titleTextEditingController.clear();
-          Navigator.of(context).pop();
-        },
-        titleTextEditingController: _titleTextEditingController,
+        child: const Icon(
+          Icons.add,
+        ),
       ),
     );
   }

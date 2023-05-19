@@ -12,8 +12,12 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
-    Navigator.pushReplacementNamed(context, '/home/');
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Future.delayed(const Duration(seconds: 2));
+      if (!mounted) return;
+      Navigator.pushReplacementNamed(context, '/home/');
+    });
   }
 
   @override

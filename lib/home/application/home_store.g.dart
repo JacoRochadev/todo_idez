@@ -9,25 +9,25 @@ part of 'home_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$HomeStore on _HomeStoreBase, Store {
-  Computed<List<ItemList>>? _$filteredListComputed;
+  Computed<List<Task>>? _$filteredListComputed;
 
   @override
-  List<ItemList> get filteredList => (_$filteredListComputed ??=
-          Computed<List<ItemList>>(() => super.filteredList,
+  List<Task> get filteredList =>
+      (_$filteredListComputed ??= Computed<List<Task>>(() => super.filteredList,
               name: '_HomeStoreBase.filteredList'))
-      .value;
+          .value;
 
   late final _$todoListAtom =
       Atom(name: '_HomeStoreBase.todoList', context: context);
 
   @override
-  ObservableList<ItemList> get todoList {
+  ObservableList<Task> get todoList {
     _$todoListAtom.reportRead();
     return super.todoList;
   }
 
   @override
-  set todoList(ObservableList<ItemList> value) {
+  set todoList(ObservableList<Task> value) {
     _$todoListAtom.reportWrite(value, super.todoList, () {
       super.todoList = value;
     });
@@ -69,7 +69,7 @@ mixin _$HomeStore on _HomeStoreBase, Store {
       ActionController(name: '_HomeStoreBase', context: context);
 
   @override
-  void addToList(List<ItemList> value) {
+  void addToList(List<Task> value) {
     final _$actionInfo = _$_HomeStoreBaseActionController.startAction(
         name: '_HomeStoreBase.addToList');
     try {
@@ -80,7 +80,7 @@ mixin _$HomeStore on _HomeStoreBase, Store {
   }
 
   @override
-  void removeToList(ItemList value) {
+  void removeToList(Task value) {
     final _$actionInfo = _$_HomeStoreBaseActionController.startAction(
         name: '_HomeStoreBase.removeToList');
     try {
