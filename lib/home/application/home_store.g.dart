@@ -17,22 +17,6 @@ mixin _$HomeStore on _HomeStoreBase, Store {
               name: '_HomeStoreBase.filteredList'))
           .value;
 
-  late final _$_tasksAtom =
-      Atom(name: '_HomeStoreBase._tasks', context: context);
-
-  @override
-  List<Task>? get _tasks {
-    _$_tasksAtom.reportRead();
-    return super._tasks;
-  }
-
-  @override
-  set _tasks(List<Task>? value) {
-    _$_tasksAtom.reportWrite(value, super._tasks, () {
-      super._tasks = value;
-    });
-  }
-
   late final _$todoListAtom =
       Atom(name: '_HomeStoreBase.todoList', context: context);
 
@@ -46,22 +30,6 @@ mixin _$HomeStore on _HomeStoreBase, Store {
   set todoList(ObservableList<Task> value) {
     _$todoListAtom.reportWrite(value, super.todoList, () {
       super.todoList = value;
-    });
-  }
-
-  late final _$checkedListAtom =
-      Atom(name: '_HomeStoreBase.checkedList', context: context);
-
-  @override
-  bool get checkedList {
-    _$checkedListAtom.reportRead();
-    return super.checkedList;
-  }
-
-  @override
-  set checkedList(bool value) {
-    _$checkedListAtom.reportWrite(value, super.checkedList, () {
-      super.checkedList = value;
     });
   }
 
@@ -81,6 +49,39 @@ mixin _$HomeStore on _HomeStoreBase, Store {
     });
   }
 
+  late final _$getAllTasksAsyncAction =
+      AsyncAction('_HomeStoreBase.getAllTasks', context: context);
+
+  @override
+  Future<void> getAllTasks() {
+    return _$getAllTasksAsyncAction.run(() => super.getAllTasks());
+  }
+
+  late final _$addTaskAsyncAction =
+      AsyncAction('_HomeStoreBase.addTask', context: context);
+
+  @override
+  Future<void> addTask(Task task) {
+    return _$addTaskAsyncAction.run(() => super.addTask(task));
+  }
+
+  late final _$deleteTaskAsyncAction =
+      AsyncAction('_HomeStoreBase.deleteTask', context: context);
+
+  @override
+  Future<void> deleteTask(Task task) {
+    return _$deleteTaskAsyncAction.run(() => super.deleteTask(task));
+  }
+
+  late final _$updateTaskListAsyncAction =
+      AsyncAction('_HomeStoreBase.updateTaskList', context: context);
+
+  @override
+  Future<void> updateTaskList(Task tasksOld, Task tasksNew) {
+    return _$updateTaskListAsyncAction
+        .run(() => super.updateTaskList(tasksOld, tasksNew));
+  }
+
   late final _$_HomeStoreBaseActionController =
       ActionController(name: '_HomeStoreBase', context: context);
 
@@ -90,39 +91,6 @@ mixin _$HomeStore on _HomeStoreBase, Store {
         name: '_HomeStoreBase.changeTasksList');
     try {
       return super.changeTasksList(value);
-    } finally {
-      _$_HomeStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void addToList(List<Task> value) {
-    final _$actionInfo = _$_HomeStoreBaseActionController.startAction(
-        name: '_HomeStoreBase.addToList');
-    try {
-      return super.addToList(value);
-    } finally {
-      _$_HomeStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void removeToList(Task value) {
-    final _$actionInfo = _$_HomeStoreBaseActionController.startAction(
-        name: '_HomeStoreBase.removeToList');
-    try {
-      return super.removeToList(value);
-    } finally {
-      _$_HomeStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void changeCheckedList(bool? value) {
-    final _$actionInfo = _$_HomeStoreBaseActionController.startAction(
-        name: '_HomeStoreBase.changeCheckedList');
-    try {
-      return super.changeCheckedList(value);
     } finally {
       _$_HomeStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -143,7 +111,6 @@ mixin _$HomeStore on _HomeStoreBase, Store {
   String toString() {
     return '''
 todoList: ${todoList},
-checkedList: ${checkedList},
 filter: ${filter},
 filteredList: ${filteredList}
     ''';

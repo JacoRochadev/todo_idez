@@ -16,7 +16,7 @@ class Task {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id.toString(),
+      'id': id,
       'title': title,
       'checked': checked,
     };

@@ -3,60 +3,35 @@ import 'package:todo_idez/app/domain/entities/task.dart';
 
 typedef CompleteTaskCallback = void Function(Task, bool);
 
-class CustomListItemComponent extends StatefulWidget {
+class CustomListItemComponent extends StatelessWidget {
   const CustomListItemComponent({
     super.key,
     required this.element,
-    required this.checked,
-    required this.onTap,
     required this.deleteItem,
     required this.onDone,
   });
 
   final Task element;
-  final bool checked;
-  final void Function(bool?) onTap;
   final VoidCallback deleteItem;
-  final CompleteTaskCallback onDone;
-
-  @override
-  State<CustomListItemComponent> createState() =>
-      _CustomListItemComponentState();
-}
-
-class _CustomListItemComponentState extends State<CustomListItemComponent> {
-  bool done = false;
-
-  void changeCompleted(bool value) {
-    done = value;
-    setState(() {});
-
-    widget.onDone(widget.element, value);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    done = widget.element.checked;
-  }
+  final ValueChanged<bool> onDone;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       leading: Checkbox(
         activeColor: Theme.of(context).primaryColor,
-        value: done,
+        value: element.checked,
         onChanged: (value) {
           if (value == null) return;
-          changeCompleted(value);
+          onDone(value);
         },
       ),
       title: Text(
-        widget.element.title,
+        element.title,
         style: Theme.of(context).textTheme.labelLarge!.copyWith(
-              color: done == true ? Colors.grey[600] : Colors.black,
+              color: element.checked == true ? Colors.grey[600] : Colors.black,
               fontWeight: FontWeight.bold,
-              decoration: done == true
+              decoration: element.checked == true
                   ? TextDecoration.lineThrough
                   : TextDecoration.none,
             ),
@@ -66,7 +41,7 @@ class _CustomListItemComponentState extends State<CustomListItemComponent> {
           Icons.delete,
           color: Colors.red,
         ),
-        onPressed: widget.deleteItem,
+        onPressed: deleteItem,
       ),
     );
   }

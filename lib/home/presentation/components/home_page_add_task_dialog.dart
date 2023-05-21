@@ -44,7 +44,6 @@ class _HomePageTaskDialogState extends State<HomePageTaskDialog> {
     if (!_formKey.currentState!.validate()) return;
     widget.onAddTask(
       Task(
-        id: 1,
         title: name,
         checked: false,
       ),

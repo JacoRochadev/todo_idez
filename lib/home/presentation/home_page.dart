@@ -22,7 +22,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    controller.getTasks();
+
+    controller.getAllTasks();
   }
 
   @override
@@ -62,14 +63,15 @@ class _HomePageState extends State<HomePage> {
                   ...controller.filteredList.map(
                     (element) => CustomListItemComponent(
                       element: element,
-                      checked: controller.checkedList,
-                      onTap: controller.changeCheckedList,
-                      deleteItem: () => controller.removeToList(element),
-                      onDone: (task, checked) {
-                        Task newElement = task.copyWith(
-                          checked: checked,
+                      deleteItem: () => controller.deleteTask(element),
+                      onDone: (checked) {
+                        Task newElement = element.copyWith(
+                          checked: !element.checked,
                         );
-                        controller.updateTaskList(newElement);
+                        controller.updateTaskList(
+                          element,
+                          newElement,
+                        );
                         //prefs.saveTasks(newElement);
                       },
                     ),
@@ -85,7 +87,7 @@ class _HomePageState extends State<HomePage> {
           HomePageTaskDialog.show(
             context: context,
             onAddTask: (value) {
-              controller.addToList([value]);
+              controller.addTask(value);
 
               Navigator.pop(context);
             },

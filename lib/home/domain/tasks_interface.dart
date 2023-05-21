@@ -1,8 +1,9 @@
 import '../../app/domain/entities/task.dart';
 
 abstract class TasksInterface {
-  Map<String, Task> tasks = {};
-  Future<void> getTasks();
-  Future<void> saveTask(Task task);
-  Future<void> deleteTask(String key);
+  Future<void> initializePersistenceModule();
+  Future<List<Task>> getTasks();
+  Future<Task> saveTask(Task task);
+  Future<void> deleteTask(Task task);
+  Future<void> updateTask(Task oldTask, Task newTask);
 }

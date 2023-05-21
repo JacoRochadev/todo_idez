@@ -14,13 +14,7 @@ abstract class _HomeStoreBase with Store {
   _HomeStoreBase(this._repository);
 
   @observable
-  List<Task>? _tasks;
-
-  @observable
   ObservableList<Task> todoList = ObservableList<Task>();
-
-  @observable
-  bool checkedList = false;
 
   @observable
   FilterByTasks filter = FilterByTasks.all;
@@ -29,21 +23,32 @@ abstract class _HomeStoreBase with Store {
   void changeTasksList(List<Task> value) => todoList = value.asObservable();
 
   @action
-  void addToList(List<Task> value) => todoList.addAll(value.asObservable());
-
-  @action
-  void removeToList(Task value) => todoList.remove(value);
-
-  @action
-  void changeCheckedList(bool? value) => checkedList = value ?? checkedList;
-
-  @action
   void changeFilter(FilterByTasks value) => filter = value;
 
   @action
-  Future<void> getTasks() async {
-    await _repository.getTasks();
-    changeTasksList(_repository.tasks.values.toList());
+  Future<void> getAllTasks() async {
+    await _repository.initializePersistenceModule();
+    final tasks_ = await _repository.getTasks();
+    changeTasksList(tasks_);
+  }
+
+  @action
+  Future<void> addTask(Task task) async {
+    final task_ = await _repository.saveTask(task);
+    todoList.add(task_);
+  }
+
+  @action
+  Future<void> deleteTask(Task task) async {
+    _repository.deleteTask(task);
+    todoList.remove(task);
+  }
+
+  @action
+  Future<void> updateTaskList(Task tasksOld, Task tasksNew) async {
+    await _repository.updateTask(tasksOld, tasksNew);
+    final index = todoList.indexOf(tasksOld);
+    todoList[index] = tasksNew;
   }
 
   @computed
@@ -58,10 +63,5 @@ abstract class _HomeStoreBase with Store {
       default:
         return todoList;
     }
-  }
-
-  void updateTaskList(Task tasks) {
-    final index = todoList.indexWhere((element) => element.id == tasks.id);
-    todoList[index] = tasks;
   }
 }
