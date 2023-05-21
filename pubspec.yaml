@@ -17,6 +17,7 @@ dependencies:
   google_fonts: ^4.0.4
   flutter_localizations:
     sdk: flutter
+  shared_preferences: ^2.1.1
 
 dev_dependencies:
   flutter_test:

@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:todo_idez/app/domain/enums/filter_by_tasks.dart';
-import 'package:todo_idez/home/presentation/components/custom_list_item_component.dart';
 
+import '../../app/domain/entities/task.dart';
 import '../application/home_store.dart';
 import 'components/custom_button_filter_component.dart';
+import 'components/custom_list_item_component.dart';
 import 'components/home_page_add_task_dialog.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,7 +18,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final controller = Modular.get<HomeStore>();
-  final _titleTextEditingController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    controller.getTasks();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,16 +55,23 @@ class _HomePageState extends State<HomePage> {
                           .toList(),
                     ),
                   ),
-                  if (controller.todoList.isEmpty)
+                  if (controller.filteredList.isEmpty)
                     const Center(
                       child: Text('Adicione uma nova tarefa!'),
                     ),
                   ...controller.filteredList.map(
                     (element) => CustomListItemComponent(
-                      title: element.title,
+                      element: element,
                       checked: controller.checkedList,
                       onTap: controller.changeCheckedList,
                       deleteItem: () => controller.removeToList(element),
+                      onDone: (task, checked) {
+                        Task newElement = task.copyWith(
+                          checked: checked,
+                        );
+                        controller.updateTaskList(newElement);
+                        //prefs.saveTasks(newElement);
+                      },
                     ),
                   ),
                 ],
@@ -73,6 +86,7 @@ class _HomePageState extends State<HomePage> {
             context: context,
             onAddTask: (value) {
               controller.addToList([value]);
+
               Navigator.pop(context);
             },
           );

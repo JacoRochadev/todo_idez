@@ -1,6 +1,7 @@
 import 'package:mobx/mobx.dart';
 import 'package:todo_idez/app/domain/entities/task.dart';
 import 'package:todo_idez/app/domain/enums/filter_by_tasks.dart';
+import 'package:todo_idez/home/domain/tasks_interface.dart';
 
 part 'home_store.g.dart';
 
@@ -8,6 +9,13 @@ part 'home_store.g.dart';
 class HomeStore = _HomeStoreBase with _$HomeStore;
 
 abstract class _HomeStoreBase with Store {
+  final TasksInterface _repository;
+
+  _HomeStoreBase(this._repository);
+
+  @observable
+  List<Task>? _tasks;
+
   @observable
   ObservableList<Task> todoList = ObservableList<Task>();
 
@@ -16,6 +24,9 @@ abstract class _HomeStoreBase with Store {
 
   @observable
   FilterByTasks filter = FilterByTasks.all;
+
+  @action
+  void changeTasksList(List<Task> value) => todoList = value.asObservable();
 
   @action
   void addToList(List<Task> value) => todoList.addAll(value.asObservable());
@@ -29,6 +40,12 @@ abstract class _HomeStoreBase with Store {
   @action
   void changeFilter(FilterByTasks value) => filter = value;
 
+  @action
+  Future<void> getTasks() async {
+    await _repository.getTasks();
+    changeTasksList(_repository.tasks.values.toList());
+  }
+
   @computed
   List<Task> get filteredList {
     switch (filter) {
@@ -41,5 +58,10 @@ abstract class _HomeStoreBase with Store {
       default:
         return todoList;
     }
+  }
+
+  void updateTaskList(Task tasks) {
+    final index = todoList.indexWhere((element) => element.id == tasks.id);
+    todoList[index] = tasks;
   }
 }

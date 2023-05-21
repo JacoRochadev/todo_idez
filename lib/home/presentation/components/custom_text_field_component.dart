@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class CustomTextFieldComponent extends StatelessWidget {
   final String hint;
+  final String? Function(String?)? validator;
   final TextEditingController? textEditingController;
   final TextInputType keyboardType;
   final ValueChanged<String>? onChanged;
@@ -11,12 +12,14 @@ class CustomTextFieldComponent extends StatelessWidget {
     this.textEditingController,
     required this.keyboardType,
     this.onChanged,
+    this.validator,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       onChanged: onChanged,
+      validator: validator,
       keyboardType: keyboardType,
       controller: textEditingController,
       decoration: InputDecoration(

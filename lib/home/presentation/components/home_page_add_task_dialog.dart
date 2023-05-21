@@ -44,6 +44,7 @@ class _HomePageTaskDialogState extends State<HomePageTaskDialog> {
     if (!_formKey.currentState!.validate()) return;
     widget.onAddTask(
       Task(
+        id: 1,
         title: name,
         checked: false,
       ),
@@ -62,11 +63,12 @@ class _HomePageTaskDialogState extends State<HomePageTaskDialog> {
       content: Form(
         key: _formKey,
         child: CustomTextFieldComponent(
+          validator: nameValidator,
+          hint: 'Digite o nome da tarefa',
+          keyboardType: TextInputType.text,
           onChanged: (value) {
             name = value;
           },
-          hint: 'Digite o nome da tarefa',
-          keyboardType: TextInputType.text,
         ),
       ),
       actions: [

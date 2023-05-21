@@ -17,6 +17,22 @@ mixin _$HomeStore on _HomeStoreBase, Store {
               name: '_HomeStoreBase.filteredList'))
           .value;
 
+  late final _$_tasksAtom =
+      Atom(name: '_HomeStoreBase._tasks', context: context);
+
+  @override
+  List<Task>? get _tasks {
+    _$_tasksAtom.reportRead();
+    return super._tasks;
+  }
+
+  @override
+  set _tasks(List<Task>? value) {
+    _$_tasksAtom.reportWrite(value, super._tasks, () {
+      super._tasks = value;
+    });
+  }
+
   late final _$todoListAtom =
       Atom(name: '_HomeStoreBase.todoList', context: context);
 
@@ -67,6 +83,17 @@ mixin _$HomeStore on _HomeStoreBase, Store {
 
   late final _$_HomeStoreBaseActionController =
       ActionController(name: '_HomeStoreBase', context: context);
+
+  @override
+  void changeTasksList(List<Task> value) {
+    final _$actionInfo = _$_HomeStoreBaseActionController.startAction(
+        name: '_HomeStoreBase.changeTasksList');
+    try {
+      return super.changeTasksList(value);
+    } finally {
+      _$_HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void addToList(List<Task> value) {
